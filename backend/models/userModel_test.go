@@ -96,7 +96,6 @@ func TestUserValidate(t *testing.T) {
 func TestHashPassword(t *testing.T) {
 	// Setup test database
 
-
 	tests := []struct {
 		name     string
 		password string
@@ -225,5 +224,3 @@ func TestPasswordOperations(t *testing.T) {
 		t.Error("Should fail with wrong password")
 	}
 }
-
-
