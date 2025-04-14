@@ -1,0 +1,27 @@
+<svg width="800" height="150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Define an eco-friendly pattern with subtle natural details -->
+    <pattern id="ecoPattern" patternUnits="userSpaceOnUse" width="100" height="100">
+      <!-- A very light fill base -->
+      <rect width="100" height="100" fill="#66bb6a" fill-opacity="0.2"/>
+      <!-- A gentle, organic curve element -->
+      <path d="M10,80 Q30,20 50,80" stroke="#2e7d32" stroke-width="2" fill="none" opacity="0.3"/>
+      <!-- A small circle reminiscent of a leaf or seed pod -->
+      <circle cx="80" cy="30" r="5" fill="#2e7d32" opacity="0.3"/>
+      <!-- A delicate, short line accent -->
+      <path d="M70,90 L85,70" stroke="#2e7d32" stroke-width="2" opacity="0.3"/>
+    </pattern>
+    
+    <!-- Drop shadow filter for added depth -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="rgba(0,0,0,0.2)" />
+    </filter>
+  </defs>
+  
+  <!-- Main text element filled with the eco-pattern, accented with a stroke for clarity -->
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
+        font-family="'Segoe UI', sans-serif" font-size="64"
+        fill="url(#ecoPattern)" filter="url(#dropShadow)" stroke="#2e7d32" stroke-width="1">
+    eco-quest-calculator
+  </text>
+</svg>
