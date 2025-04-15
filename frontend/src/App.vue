@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { RouterView } from 'vue-router';
+import LoginForm from './components/form/LoginForm.vue';
 </script>
 
 <template>
   <header>
     <div class="flex justify-between items-center p-4">
       <h1 class="text-2xl font-bold">Home</h1>
-      <Avatar>
-        <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+
+
+          <LoginForm />
+
     </div>
   </header>
   <RouterView />
