@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 120">
+  <!-- Location‑pin + leaf icon -->
+  <g transform="translate(20,20)">
+    <!-- Outer pin shape -->
+    <path d="M40,0 
+             C58,0 72,14 72,32 
+             C72,56 40,104 40,104 
+             C40,104 8,56 8,32 
+             C8,14 22,0 40,0 Z"
+          fill="#76C043"/>
+    <!-- Inner leaf shape -->
+    <path d="M40,8 
+             C50,8 58,16 58,26 
+             C58,40 40,68 40,68 
+             C40,68 22,40 22,26 
+             C22,16 30,8 40,8 Z"
+          fill="#A5D6A7"/>
+  </g>
+
+  <!-- Brand text -->
+  <text x="120" y="75"
+        fill="#2E7D32"
+        font-family="Segoe UI, Arial, sans-serif"
+        font-size="60"
+        font-weight="bold">
+    ecoquestcalulator
+  </text>
+</svg>

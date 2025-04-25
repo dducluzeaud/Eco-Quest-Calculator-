@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -12,10 +11,10 @@ import (
 
 var DB *gorm.DB
 
-func ConnectDatabase() {
+func ConnectDatabase() error {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		return fmt.Errorf("error loading .env file: %w", err)
 	}
 
 	dsn := fmt.Sprintf(
@@ -29,12 +28,13 @@ func ConnectDatabase() {
 
 	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		return fmt.Errorf("failed to connect to database: %w", err)
 	}
 
 	if err := database.AutoMigrate(&User{}); err != nil {
-		log.Fatalf("Failed to auto migrate database: %v", err)
+		return fmt.Errorf("failed to auto migrate database: %w", err)
 	}
 
 	DB = database
+	return nil
 }
