@@ -1,14 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended"
+  ],
   "packageRules": [
     {
-      "matchPaths": ["**/package.json"],
+      "matchFileNames": [
+        "**/package.json"
+      ],
       "groupName": "frontend dependencies",
       "description": "Updates for Vue frontend dependencies"
     },
     {
-      "matchPaths": ["**/go.mod"],
+      "matchFileNames": [
+        "**/go.mod"
+      ],
       "groupName": "backend dependencies",
       "description": "Updates for Go backend modules"
     }
