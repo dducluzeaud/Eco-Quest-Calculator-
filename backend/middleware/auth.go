@@ -2,13 +2,18 @@ package middleware
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"strings"
-
-	"errors"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+)
+
+type ContextKey string
+
+const (
+	UserIDKey ContextKey = "user_id"
 )
 
 type Claims struct {
@@ -25,7 +30,7 @@ func GenerateRefreshToken(userID uint) (string, error) {
 }
 
 func ValidateToken(tokenString string) (*Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(_ *jwt.Token) (any, error) {
 		return []byte("your-secret-key"), nil
 	})
 
@@ -60,7 +65,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "user_id", claims.UserID)
+		ctx := context.WithValue(r.Context(), UserIDKey, claims.UserID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
