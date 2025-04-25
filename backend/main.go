@@ -4,22 +4,48 @@ import (
 	"eco-quest-calculator/backend/models"
 	"eco-quest-calculator/backend/routes"
 	"log"
-
-	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
-	// Initialize the database connection
-	models.ConnectDatabase()
+	// Initialize database
+	if err := models.ConnectDatabase(); err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
 
-	// Create a new Gin router instance
-	router := gin.Default()
+	// Create new router
+	mux := http.NewServeMux()
 
-	// Set up authentication routes
-	routes.AuthRoutes(router)
+	// Register routes
+	routes.RegisterAuthRoutes(mux)
 
-	// Start the server on port 8080
-	if err := router.Run(":8080"); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+	// Add middleware
+	handler := corsMiddleware(mux)
+
+	// Create server
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: handler,
+	}
+
+	// Start server
+	log.Printf("Server starting on http://localhost%s", server.Addr)
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
 	}
 }

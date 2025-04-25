@@ -1,48 +1,76 @@
 // auth.js
-import { acceptHMRUpdate, defineStore } from 'pinia'
 
-type AuthStore =
-  | {
-      user: {
-        id: number
-        name: string
-        email: string
-        role: string
-      }
-      token: string
-      refreshToken: string
-    }
-  | {
-      user: null
-      token: null
-      refreshToken: null
-    }
+import auth, { type LoginCredentials } from '@/api/auth'
+import { acceptHMRUpdate, defineStore } from 'pinia'
+import { z } from 'zod'
+
+const UserSchema = z.object({
+  id: z.number(),
+  username: z.string(),
+  email: z.string().email(),
+})
+
+const AuthStoreSchema = z.object({
+  user: UserSchema.nullable(),
+  accessToken: z.string().nullable(),
+  refreshToken: z.string().nullable(),
+})
+
+const AuthStoreValidation = z.object({
+  user: UserSchema,
+  accessToken: z.string().min(1),
+  refreshToken: z.string().min(1),
+})
 
 export const useAuthStore = defineStore('auth', {
-  state: (): AuthStore => ({
+  state: (): z.infer<typeof AuthStoreSchema> => ({
     user: null,
-    token: null,
+    accessToken: null,
     refreshToken: null,
   }),
   getters: {
-    isAuthenticated(state) {
-      return !!state.user
+    isAuthenticated(): boolean {
+      return !!this.user
     },
-    getUser(state) {
-      return state.user
+    getUsername(): string {
+      if (!this.user?.username) {
+        throw new Error('User name is not available')
+      }
+      return this.user.username
     },
-    getToken(state) {
-      return state.token
+    getEmail(): string {
+      if (!this.user?.email) {
+        throw new Error('User name is not available')
+      }
+      return this.user.email
     },
   },
   actions: {
-    setAuh(auth: AuthStore) {
-      this.user = auth.user
-      this.token = auth.token
+    async login(credentials: LoginCredentials) {
+      try {
+        const response = await auth.login(credentials)
+
+        console.log('Login response:', response)
+        const validated = AuthStoreValidation.parse(response.data)
+        console.log('Validated response:', validated)
+
+        this.user = validated.user
+        this.accessToken = validated.accessToken
+        this.refreshToken = validated.refreshToken
+
+        return true
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          console.error('Validation error:', error.errors)
+        }
+        console.error('Login error:', error)
+        throw error
+      }
     },
-    clearAuth() {
+    logout() {
       this.user = null
-      this.token = null
+      this.accessToken = null
+      this.refreshToken = null
     },
   },
   persist: true,

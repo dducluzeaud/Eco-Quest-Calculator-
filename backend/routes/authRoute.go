@@ -1,12 +1,11 @@
 package routes
 
 import (
-	"eco-quest-calculator/backend/controllers"
-
-	"github.com/gin-gonic/gin"
+	"eco-quest-calculator/backend/handlers"
+	"net/http"
 )
 
-func AuthRoutes(r *gin.Engine) {
-	r.POST("/register", controllers.Register)
-	r.POST("/login", controllers.Login)
+func RegisterAuthRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("/api/auth/register", handlers.Register)
+	mux.HandleFunc("/api/auth/login", handlers.Login)
 }
