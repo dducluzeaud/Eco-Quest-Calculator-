@@ -46,7 +46,7 @@ func TestValidateToken(t *testing.T) {
 
 func TestAuthMiddleware(t *testing.T) {
 	// Create a mock handler
-	nextHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	nextHandler := http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
 		// Check if user ID is in context
 		userID := r.Context().Value(UserIDKey)
 		if userID == nil {
