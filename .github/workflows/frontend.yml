@@ -13,6 +13,10 @@ on:
       - 'frontend/**'
       - '.github/workflows/frontend.yml'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     working-directory: ./frontend
@@ -47,7 +51,7 @@ jobs:
 
   typecheck:
     name: typecheck
-    runs-on: ubuntu-latestbun
+    runs-on: ubuntu-latest
     needs: install
     steps:
       - uses: actions/checkout@v4

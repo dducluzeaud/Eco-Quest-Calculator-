@@ -5,12 +5,16 @@ on:
     branches: [ main ]
     paths:
       - 'backend/**'
-      - '.github/workflows/backend.yml'
+      - '.github/workflows/**'
   pull_request:
     branches: [ main ]
     paths:
       - 'backend/**'
-      - '.github/workflows/backend.yml'
+      - '.github/workflows/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 defaults:
     run:
