@@ -5,18 +5,16 @@
   ],
   "packageRules": [
     {
-      "matchFileNames": [
-        "**/package.json"
-      ],
+      "matchFileNames": ["**/package.json"],
       "groupName": "frontend dependencies",
-      "description": "Updates for Vue frontend dependencies"
+      "description": "Updates for Vue frontend dependencies",
+      "sourceDirectory": "frontend"
     },
     {
-      "matchFileNames": [
-        "**/go.mod"
-      ],
+      "matchFileNames": ["**/go.mod"],
       "groupName": "backend dependencies",
-      "description": "Updates for Go backend modules"
+      "description": "Updates for Go backend modules",
+      "sourceDirectory": "backend"
     }
   ]
 }

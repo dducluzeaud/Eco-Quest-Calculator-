@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'backend/**'
+      - 'frontend/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'backend/**'
+      - 'frontend/**'
 
 defaults:
   run:
@@ -21,8 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/bun.lockb') }}
       - run: bun install
-
 
   lint:
     name: eslint
@@ -31,13 +35,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
-      - run: bun run eslint 
+      - name: Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/bun.lockb') }}
+      - run: bun run lint:ci  
 
   typecheck:
-    name: eslint
+    name: typecheck
     runs-on: ubuntu-latest
     needs: install
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+      - name: Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/bun.lockb') }}
       - run: bun run type-check
