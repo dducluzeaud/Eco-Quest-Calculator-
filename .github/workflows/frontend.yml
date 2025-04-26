@@ -5,10 +5,13 @@ on:
     branches: [ main ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/backend.yml'
+
   pull_request:
     branches: [ main ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/frontend.yml'
 
 defaults:
   run:
@@ -44,7 +47,7 @@ jobs:
 
   typecheck:
     name: typecheck
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latestbun
     needs: install
     steps:
       - uses: actions/checkout@v4
