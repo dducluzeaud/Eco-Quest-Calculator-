@@ -66,8 +66,7 @@ function closeAndNavigateToLogin() {
 
 const onSubmit = form.handleSubmit(async (values) => {
   try {
-    await authStore.register({
-      username: values.username,
+    await authStore.login({
       email: values.email,
       password: values.password,
     })
